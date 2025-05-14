@@ -1,0 +1,61 @@
+{% extends 'dashboardfiles/dashboard.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link href="{% static 'css/diabetes_prediction.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Liver Disease Prediction</h1>
+
+    {% if error_message %}
+    <div class="alert" style="background-color: #fff5f5; padding: 1rem; border-radius: 8px; border: 1px solid #fc8181; margin-bottom: 1.5rem;">
+        <p style="color: #e53e3e; margin: 0;"><i class="fas fa-exclamation-circle"></i> {{ error_message }}</p>
+    </div>
+    {% endif %}
+    
+    <form method="post" action="{% url 'dashboard_liver_prediction' %}">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="age">Age: (Min: 18, Max: 90)</label>
+            <input type="number" id="age" name="Age" step="1" min="18" max="90" required>
+        </div>
+        <div class="form-group">
+            <label for="total_bilirubin">Total Bilirubin: (Min: 0.1, Max: 20.0 mg/dL)</label>
+            <input type="number" id="total_bilirubin" name="Total_Bilirubin" step="0.01" min="0.1" max="20" required>
+        </div>
+        <div class="form-group">
+            <label for="direct_bilirubin">Direct Bilirubin: (Min: 0, Max: 10.0 mg/dL)</label>
+            <input type="number" id="direct_bilirubin" name="Direct_Bilirubin" step="0.01" min="0" max="10" required>
+        </div>
+        <div class="form-group">
+            <label for="alkaline_phosphotase">Alkaline Phosphotase: (Min: 10, Max: 500 U/L)</label>
+            <input type="number" id="alkaline_phosphotase" name="Alkaline_Phosphotase" step="1" min="10" max="500" required>
+        </div>
+        <div class="form-group">
+            <label for="alamine_aminotransferase">Alamine Aminotransferase: (Min: 1, Max: 500 U/L)</label>
+            <input type="number" id="alamine_aminotransferase" name="Alamine_Aminotransferase" step="1" min="1" max="500" required>
+        </div>
+        <div class="form-group">
+            <label for="aspartate_aminotransferase">Aspartate Aminotransferase: (Min: 1, Max: 500 U/L)</label>
+            <input type="number" id="aspartate_aminotransferase" name="Aspartate_Aminotransferase" step="1" min="1" max="500" required>
+        </div>
+        <div class="form-group">
+            <label for="total_proteins">Total Proteins: (Min: 2.0, Max: 12.0 g/dL)</label>
+            <input type="number" id="total_proteins" name="Total_Proteins" step="0.01" min="2" max="12" required>
+        </div>
+        <div class="form-group">
+            <label for="albumin">Albumin: (Min: 1.0, Max: 7.0 g/dL)</label>
+            <input type="number" id="albumin" name="Albumin" step="0.01" min="1" max="7" required>
+        </div>
+        <div class="form-group">
+            <label for="albumin_and_globulin_ratio">Albumin and Globulin Ratio: (Min: 0.1, Max: 5.0)</label>
+            <input type="number" id="albumin_and_globulin_ratio" name="Albumin_and_Globulin_Ratio" step="0.01" min="0.1" max="5" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Predict</button>
+    </form>
+</div>
+{% endblock %}

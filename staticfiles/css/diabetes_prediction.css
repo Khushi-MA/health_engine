@@ -1,0 +1,92 @@
+/* body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 700px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+} */
+
+h1 {
+    text-align: center;
+    color: #005f73;
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+/* Scoped styles for forms */
+form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+form .form-group label {
+    font-weight: bold;
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+form .form-group input[type="number"] {
+    padding: 14px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+    background-color: #f9f9f9;
+}
+
+form button {
+    background-color: #005f73;
+    color: white;
+    font-size: 18px;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #003d44;
+}
+
+.result {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+.result p {
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f2f7f2;
+    border: 1px solid #d1e7dd;
+    color: #2c6e49;
+}
+
+.container-footer {
+    font-size: 14px;
+    text-align: center;
+    color: #555;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}

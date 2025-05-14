@@ -1,0 +1,348 @@
+{% extends "dashboardfiles/dashboard.html" %}
+{% block extra_css %}
+<style>
+    .medication-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: 'Georgia', serif;
+    }
+    
+    .page-title {
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 32px;
+        border-bottom: 2px solid #e0e0e0;
+        padding-bottom: 10px;
+    }
+    
+    /* Modal styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+    
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        width: 80%;
+        max-width: 600px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+    
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    
+    .close:hover {
+        color: black;
+    }
+    
+    .add-button-container {
+        text-align: right;
+        margin-bottom: 20px;
+    }
+    
+    .medication-form {
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        padding: 25px;
+    }
+    
+    /* ... existing CSS styles for form-group, form-control, buttons, etc. ... */
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        margin-bottom: 10px;
+        transition: border-color 0.3s;
+    }
+    
+    .form-control:focus {
+        border-color: #4a69bd;
+        outline: none;
+    }
+    
+    .btn {
+        display: inline-block;
+        padding: 10px 15px;
+        font-size: 16px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 4px;
+        border: none;
+        margin: 5px 0;
+        transition: background 0.3s;
+    }
+    
+    .btn-primary {
+        color: white;
+        background-color: #4a69bd;
+    }
+    
+    .btn-primary:hover {
+        background-color: #3c58a8;
+    }
+    
+    .btn-secondary {
+        color: white;
+        background-color: #6c757d;
+    }
+    
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+    
+    .medication-card {
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .medication-title {
+        font-size: 24px;
+        color: #2c3e50;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+    }
+    
+    .medication-info {
+        margin-bottom: 10px;
+        color: #555;
+    }
+    
+    .times-list {
+        color: #666;
+        font-style: italic;
+    }
+    
+    .logs-list {
+        list-style-type: none;
+        padding-left: 0;
+    }
+    
+    .log-item {
+        padding: 10px;
+        margin-bottom: 5px;
+        border-left: 3px solid #ddd;
+        background-color: #f9f9f9;
+    }
+    
+    .log-pending {
+        border-left-color: #ffc107;
+    }
+    
+    .log-taken {
+        border-left-color: #28a745;
+    }
+    
+    .log-missed {
+        border-left-color: #dc3545;
+    }
+    
+    .action-buttons {
+        margin-top: 5px;
+    }
+    
+    .action-link {
+        text-decoration: none;
+        display: inline-block;
+        padding: 5px 10px;
+        margin-right: 5px;
+        border-radius: 3px;
+        font-size: 14px;
+    }
+    
+    .action-taken {
+        background-color: #28a745;
+        color: white;
+    }
+    
+    .action-missed {
+        background-color: #dc3545;
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="medication-container">
+    <h2 class="page-title">Medication Dashboard</h2>
+    
+    <div class="add-button-container">
+        <button id="openMedicationFormBtn" class="btn btn-primary">Add Medication</button>
+    </div>
+
+    <!-- Modal Form -->
+    <div id="medicationFormModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Add New Medication</h3>
+            <div class="medication-form">
+                <form method="POST" action="{% url 'add_medication' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Medication Name:</label>
+                        <input type="text" name="name" class="form-control" placeholder="Medication Name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Number of Times Each Day:</label>
+                        <input type="number" name="times_per_day" id="times_per_day" min="1" value="1" class="form-control" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Start Date:</label>
+                        <input type="date" name="start_date" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>End Date:</label>
+                        <input type="date" name="end_date" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Enter Times:</label>
+                        <div id="time_inputs">
+                            <input type="time" name="times" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="button" id="add_time" class="btn btn-secondary">Add Another Time</button>
+                        <button type="button" id="remove_time" class="btn btn-secondary">Remove Time</button>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Add Medication</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Medication Cards -->
+    {% for med in medications %}
+        <div class="medication-card">
+            <h3 class="medication-title">{{ med.name }} ({{ med.times_per_day }} times/day)</h3>
+            <p class="medication-info">From {{ med.start_date }} to {{ med.end_date }}</p>
+            <p class="medication-info">
+                Notification Times:
+                <span class="times-list">
+                {% for t in med.times.all %}
+                    {{ t.time }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+                </span>
+            </p>
+            <ul class="logs-list">
+            {% for log in med.logs.all %}
+                <li class="log-item log-{{ log.status }}">
+                    {{ log.date }} at {{ log.time_to_take }} - <strong>{{ log.status|title }}</strong>
+                    {% if log.status == 'pending' %}
+                        <div class="action-buttons">
+                            <a href="{% url 'mark_dose' log.id 'taken' %}" class="action-link action-taken">Mark Taken</a>
+                            <a href="{% url 'mark_dose' log.id 'missed' %}" class="action-link action-missed">Mark Missed</a>
+                        </div>
+                    {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% empty %}
+        <div class="medication-card">
+            <p class="medication-info">No medications found. Add your first medication using the button above.</p>
+        </div>
+    {% endfor %}
+</div>
+
+<script>
+    // Modal functionality
+    const modal = document.getElementById("medicationFormModal");
+    const btn = document.getElementById("openMedicationFormBtn");
+    const span = document.getElementsByClassName("close")[0];
+
+    // Open modal when button is clicked
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // Close modal when (X) is clicked
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // Close modal when clicking outside of it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // Function to update the times_per_day value
+    function updateTimesPerDay() {
+        const timeInputs = document.querySelectorAll('#time_inputs input[type="time"]');
+        document.getElementById('times_per_day').value = timeInputs.length;
+    }
+
+    // Initialize
+    updateTimesPerDay();
+
+    // Add time input
+    document.getElementById('add_time').addEventListener('click', function () {
+        const timeInputs = document.getElementById('time_inputs');
+        const input = document.createElement('input');
+        input.type = 'time';
+        input.name = 'times';
+        input.required = true;
+        input.className = 'form-control';
+        timeInputs.appendChild(input);
+        
+        // Update times_per_day
+        updateTimesPerDay();
+    });
+
+    // Remove time input
+    document.getElementById('remove_time').addEventListener('click', function () {
+        const timeInputs = document.querySelectorAll('#time_inputs input[type="time"]');
+        if (timeInputs.length > 1) { // Ensure at least one time input remains
+            const lastInput = timeInputs[timeInputs.length - 1];
+            lastInput.remove();
+            
+            // Update times_per_day
+            updateTimesPerDay();
+        }
+    });
+</script>
+{% endblock %}

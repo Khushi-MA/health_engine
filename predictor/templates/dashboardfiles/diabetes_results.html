@@ -1,0 +1,65 @@
+{% extends 'dashboardfiles/dashboard.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link href="{% static 'css/diabetes_results.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Diabetes Prediction Results</h1>
+    
+    <div class="result {% if 'Diabetes detected' in prediction_result %}positive-result{% else %}negative-result{% endif %}">
+        <div class="result-icon">
+            {% if "No diabetes detected" in prediction_result %}
+                <i class="fas fa-check-circle healthy-icon"></i>
+            {% elif "Diabetes detected" in prediction_result %}
+                <i class="fas fa-exclamation-circle warning-icon"></i>
+            {% endif %}
+        </div>
+        
+        {% if "No diabetes detected" in prediction_result %}
+            <p style="color: #22543d;">{{ prediction_result }}</p>
+            <div class="result-description">
+                Based on the provided information, our model indicates no significant risk factors for diabetes at this time.
+            </div>
+        {% elif "Diabetes detected" in prediction_result %}
+            <p style="color: #9b2c2c;">{{ prediction_result }}</p>
+            <div class="result-description">
+                Based on the provided information, our model has detected potential indicators of diabetes. Further medical evaluation is recommended.
+            </div>
+        {% else %}
+            <p>{{ prediction_result }}</p>
+        {% endif %}
+    </div>
+    
+    {% if prediction_accuracy is not None %}
+        <div class="accuracy">
+            <p style="color: #2b6cb0; font-weight: 600;">Prediction Accuracy: {{ prediction_accuracy }}%</p>
+            <div class="accuracy-description">
+                This represents the model's confidence level in this prediction based on similar cases in our training data.
+            </div>
+        </div>
+    {% endif %}
+    
+    <div class="caution-note">
+        <h3><i class="fas fa-exclamation-triangle"></i>Important Medical Notice</h3>
+        <p>
+            Please note that this prediction is based on a machine learning model and should <strong>not</strong> be considered a definitive medical diagnosis. 
+            The results are for informational purposes only and cannot replace professional medical advice.
+        </p>
+        <p style="font-weight: 500;">
+            For accurate medical advice and a proper diagnosis, please consult with a qualified healthcare professional or visit a hospital for a thorough clinical evaluation.
+        </p>
+        <p style="font-size: 0.9rem; color: #718096; margin-top: 1rem;">
+            Diabetes can be effectively managed with proper medical care, dietary changes, and lifestyle modifications. Early detection and treatment are important for better outcomes.
+        </p>
+    </div>
+    
+    <div class="navigation">
+        <a href="{% url 'dashboard_diabetes_prediction' %}" class="back-button">
+            <i class="fas fa-arrow-left"></i>Make Another Prediction
+        </a>
+    </div>
+</div>
+{% endblock %}

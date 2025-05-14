@@ -1,0 +1,55 @@
+{% extends 'dashboardfiles/dashboard.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link href="{% static 'css/diabetes_prediction.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1>Diabetes Prediction</h1>
+
+  {% if error_message %}
+  <div class="alert alert-danger">
+    <p>{{ error_message }}</p>
+  </div>
+  {% endif %}
+
+  <form method="post" action="{% url 'dashboard_diabetes_prediction' %}">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="pregnancies">Pregnancies: (Min: 0, Max: 20)</label>
+      <input type="number" id="pregnancies" name="Pregnancies" step="1" min="0" max="20" required>
+    </div>
+    <div class="form-group">
+      <label for="glucose">Glucose: (Min: 50, Max: 250 mg/dL)</label>
+      <input type="number" id="glucose" name="Glucose" step="1" min="50" max="250" required>
+    </div>
+    <div class="form-group">
+      <label for="blood_pressure">Blood Pressure: (Min: 50, Max: 150 mmHg)</label>
+      <input type="number" id="blood_pressure" name="Blood_Pressure" step="1" min="50" max="150" required>
+    </div>
+    <div class="form-group">
+      <label for="skin_thickness">Skin Thickness: (Min: 0, Max: 50 mm)</label>
+      <input type="number" id="skin_thickness" name="Skin_Thickness" step="1" min="0" max="50" required>
+    </div>
+    <div class="form-group">
+      <label for="insulin">Insulin: (Min: 0, Max: 500 μU/mL)</label>
+      <input type="number" id="insulin" name="Insulin" step="1" min="0" max="500" required>
+    </div>
+    <div class="form-group">
+      <label for="bmi">BMI: (Min: 15, Max: 60 kg/m²)</label>
+      <input type="number" id="bmi" name="BMI" step="0.1" min="15" max="60" required>
+    </div>
+    <div class="form-group">
+      <label for="diabetes_pedigree">Diabetes Pedigree: (Min: 0.01, Max: 2.5)</label>
+      <input type="number" id="diabetes_pedigree" name="Diabetes_Pedigree" step="0.01" min="0.01" max="2.5" required>
+    </div>
+    <div class="form-group">
+      <label for="age">Age: (Min: 18, Max: 100 years)</label>
+      <input type="number" id="age" name="Age" step="1" min="18" max="100" required>
+    </div>
+    <button type="submit">Predict</button>
+  </form>
+</div>
+{% endblock %}

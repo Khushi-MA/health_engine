@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Form</title>
+  
+  <!-- Material Design Bootstrap (MDB) CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css" rel="stylesheet">
+  
+  <style>
+    .strength-meter {
+      height: 5px;
+      width: 100%;
+      border-radius: 5px;
+      background-color: #e0e0e0;
+      margin-top: 5px;
+    }
+    .strength-meter .strength {
+      height: 100%;
+      border-radius: 5px;
+    }
+    .weak { background-color: #ff4d4d; }
+    .medium { background-color: #ffcc00; }
+    .strong { background-color: #66cc66; }
+  </style>
+</head>
+<body>
+  <section class="vh-100" style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp'); 
+  background-size: cover; background-position: center;">
+<div class="mask d-flex align-items-center h-100" 
+     style="background: linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5));">
+  <div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+        <div class="card" style="border-radius: 15px; box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);">
+          <div class="card-body p-5">
+            <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+            <form method="POST" action="{% url 'register' %}">
+              {% csrf_token %}
+              <div class="form-outline mb-4">
+                <input type="text" name="name" id="form3Example1cg" class="form-control form-control-lg" />
+                <label class="form-label" for="form3Example1cg">First Name</label>
+              </div>
+
+              <div class="form-outline mb-4">
+                <input type="text" name="last_name" id="form3Example1cg" class="form-control form-control-lg" />
+                <label class="form-label" for="form3Example1cg">Last Name</label>
+              </div>
+              
+              <!-- Email -->
+              <div class="form-outline mb-4">
+                <input type="email" name="email" id="form3Example3cg" class="form-control form-control-lg" />
+                <label class="form-label" for="form3Example3cg">Your Email</label>
+              </div>
+
+              <!-- Schemes Dropdown -->
+
+
+
+              <!-- Password -->
+              <div class="form-outline mb-4">
+                <input type="password" name="password" id="form3Example4cg" class="form-control form-control-lg" />
+                <label class="form-label" for="form3Example4cg">Password</label>
+                <div id="password-strength-meter" class="strength-meter">
+                  <div id="strength-bar" class="strength"></div>
+                </div>
+                <small id="password-strength-text" class="form-text text-muted"></small>
+              </div>
+
+              <!-- Repeat Password -->
+              <div class="form-outline mb-4">
+                <input type="password" name="repeat_password" id="form3Example4cdg" class="form-control form-control-lg" />
+                <label class="form-label" for="form3Example4cdg">Repeat your password</label>
+                <small id="password-mismatch" class="form-text text-muted" style="color: red; display: none;">Passwords do not match</small>
+              </div>
+
+             
+              <!-- Checkbox -->
+              <div class="form-check d-flex justify-content-center mb-4">
+                <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" />
+                <label class="form-check-label" for="form2Example3cg">
+                  I agree all statements in <a href="#!" class="text-body"><u>Terms of service</u></a>
+                </label>
+              </div>
+
+              <!-- Register Button -->
+              <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 text-white"
+                  style="background: linear-gradient(to right, rgba(132, 250, 176, 1), rgb(74, 178, 230)); 
+                         border: none; color: white; font-weight: bold;" id="register-btn" disabled>
+                  Register
+                </button>
+              </div>
+
+              <p class="text-center text-muted mt-5 mb-0">
+                Have already an account? <a href="/login" class="fw-bold text-body"><u>Login here</u></a>
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"></script>
+
+  <!-- Password Strength and Matching Validation Script -->
+  <script>
+    const passwordField = document.getElementById("form3Example4cg");
+    const repeatPasswordField = document.getElementById("form3Example4cdg");
+    const strengthMeter = document.getElementById("strength-bar");
+    const strengthText = document.getElementById("password-strength-text");
+    const passwordMismatchMessage = document.getElementById("password-mismatch");
+    const registerButton = document.getElementById("register-btn");
+
+    passwordField.addEventListener('input', function() {
+      const password = passwordField.value;
+      const strength = calculatePasswordStrength(password);
+
+      // Update strength meter and text
+      updateStrengthMeter(strength);
+      checkPasswordMatch();
+    });
+
+    repeatPasswordField.addEventListener('input', checkPasswordMatch);
+
+    function calculatePasswordStrength(password) {
+      let strength = 0;
+
+      if (password.length >= 8) strength += 1;
+      if (/[A-Z]/.test(password)) strength += 1;
+      if (/[0-9]/.test(password)) strength += 1;
+      if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+
+      return strength;
+    }
+
+    function updateStrengthMeter(strength) {
+      if (strength === 0) {
+        strengthMeter.classList.remove('weak', 'medium', 'strong');
+        strengthMeter.classList.add('weak');
+        strengthText.textContent = "Weak password";
+      } else if (strength === 1) {
+        strengthMeter.classList.remove('weak', 'medium', 'strong');
+        strengthMeter.classList.add('weak');
+        strengthText.textContent = "Weak password";
+      } else if (strength === 2) {
+        strengthMeter.classList.remove('weak', 'medium', 'strong');
+        strengthMeter.classList.add('medium');
+        strengthText.textContent = "Medium strength password";
+      } else if (strength === 3) {
+        strengthMeter.classList.remove('weak', 'medium', 'strong');
+        strengthMeter.classList.add('strong');
+        strengthText.textContent = "Strong password";
+      } else if (strength === 4) {
+        strengthMeter.classList.remove('weak', 'medium', 'strong');
+        strengthMeter.classList.add('strong');
+        strengthText.textContent = "Very strong password";
+      }
+    }
+
+    function checkPasswordMatch() {
+      const password = passwordField.value;
+      const repeatPassword = repeatPasswordField.value;
+
+      if (password !== repeatPassword) {
+        passwordMismatchMessage.style.display = 'block';
+        registerButton.disabled = true;
+      } else {
+        passwordMismatchMessage.style.display = 'none';
+        registerButton.disabled = false;
+      }
+    }
+  </script>
+
+</body>
+</html>

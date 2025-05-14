@@ -1,0 +1,415 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Heart Disease Prediction - AI Health Engine</title>
+  <meta name="description" content="AI-powered heart disease prediction and monitoring platform">
+  <meta name="keywords" content="heart disease, cardiovascular, AI prediction, health">
+
+  <!-- Favicons -->
+  <link href="static/img/favicon.png" rel="icon">
+  <link href="static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="static/vendor/aos/aos.css" rel="stylesheet">
+  <link href="static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="static/css/main.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Medilab
+  * Template URL: https://bootstrapmade.com/medilab-free-medical-bootstrap-theme/
+  * Updated: Aug 07 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header sticky-top">
+
+    <div class="topbar d-flex align-items-center">
+      <div class="container d-flex justify-content-center justify-content-md-between">
+        <div class="contact-info d-flex align-items-center">
+          <i class="bi bi-envelope d-flex align-items-center"><a
+              href="mailto:contact@example.com">contact@example.com</a></i>
+          <i class="bi bi-phone d-flex align-items-center ms-4"><span>+1 5589 55488 55</span></i>
+        </div>
+        <div class="social-links d-none d-md-flex align-items-center">
+          <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+        </div>
+      </div>
+    </div><!-- End Top Bar -->
+
+    <div class="branding d-flex align-items-center">
+
+      <div class="container position-relative d-flex align-items-center justify-content-between">
+        <a href="index.html" class="logo d-flex align-items-center me-auto">
+          <!-- Uncomment the line below if you also wish to use an image logo -->
+          <!-- <img src="static/img/logo.png" alt=""> -->
+          <h1 class="sitename">HEALTH ENGINE</h1>
+        </a>
+
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            <li><a href="{% url 'googleapi' %}">google API</a></li>
+            <li><a href="#" class="active">Home<br></a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            {% if user.is_authenticated %}
+            <!-- <li><a href="/dashboard">Dashboard</a></li> -->
+            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li class="dropdown">
+              <a href="#predict">Predict</a>
+              <ul class="dropdown-menu">
+                <li><a href="/predict">Liver Prediction</a></li>
+                <li><a href="/predict_heart">Heart Prediction</a></li>
+                <li><a href="/predict_diabetes">Diabetes Prediction</a></li>
+
+
+                <!-- Add more prediction links as needed -->
+              </ul>
+            </li>
+            {% endif %}
+            {% if user.is_authenticated %}
+            <li><a href="/logout">Logout</a></li>
+            {%else %}
+            <li><a href="/login">Login</a></li>
+            {% endif %}
+          </ul>
+          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <main class="main">
+
+    <!-- Heart Disease Hero Section -->
+    <section id="hero" class="hero section light-background">
+
+      <img src="static/img/hero-bg.jpg" alt="" data-aos="fade-in">
+
+      <div class="container position-relative">
+
+        <div class="welcome position-relative" data-aos="fade-down" data-aos-delay="100">
+          <h3>WELCOME TO </h3>
+          <h2>HEART DISEASE PREDICTION ENGINE </h2>
+          <p>Advanced AI-powered technology for accurate heart disease risk assessment and management. </p>
+        </div><!-- End Welcome -->
+        <div class="content row gy-4">
+          <div class="col-lg-4 d-flex align-items-stretch">
+            <div class="why-box" data-aos="zoom-out" data-aos-delay="200">
+              <h3>Why Choose Our Heart Disease Prediction?</h3>
+              <p>
+                Our AI-powered platform delivers accurate cardiovascular risk assessment using advanced machine learning algorithms. 
+                We analyze multiple risk factors to provide early detection and personalized heart health recommendations, 
+                helping you take control of your cardiovascular wellness.
+              </p>
+              <div class="text-center">
+                <a href="#about" class="more-btn"><span>Learn More</span> <i class="bi bi-chevron-right"></i></a>
+              </div>
+            </div>
+          </div><!-- End Why Box -->
+
+          <div class="col-lg-8 d-flex align-items-stretch">
+            <div class="d-flex flex-column justify-content-center">
+              <div class="row gy-4">
+
+                <div class="col-xl-4 d-flex align-items-stretch">
+                  <div class="icon-box" data-aos="zoom-out" data-aos-delay="300">
+                    <i class="bi bi-clipboard-data"></i>
+                    <h4>Risk Factor Analysis</h4>
+                    <p>Comprehensive assessment of key heart disease risk factors including blood pressure, cholesterol, and lifestyle habits.</p>
+                  </div>
+                </div><!-- End Icon Box -->
+
+                <div class="col-xl-4 d-flex align-items-stretch">
+                  <div class="icon-box" data-aos="zoom-out" data-aos-delay="400">
+                    <i class="bi bi-gem"></i>
+                    <h4>Early Detection</h4>
+                    <p>AI-powered algorithms detect subtle patterns that may indicate early signs of heart disease.</p>
+                  </div>
+                </div><!-- End Icon Box -->
+
+                <div class="col-xl-4 d-flex align-items-stretch">
+                  <div class="icon-box" data-aos="zoom-out" data-aos-delay="500">
+                    <i class="bi bi-inboxes"></i>
+                    <h4>Personalized Care Plans</h4>
+                    <p>Receive customized heart health recommendations and medication tracking specific to your risk profile.</p>
+                  </div>
+                </div><!-- End Icon Box -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section><!-- /Hero Section -->
+
+    <!-- About Section for Heart Disease -->
+    <section id="about" class="about section">
+
+      <div class="container">
+
+        <div class="row gy-4 gx-5">
+
+          <div class="col-lg-6 position-relative align-self-start" data-aos="fade-up" data-aos-delay="200">
+            <img src="static/img/about.jpg" class="img-fluid" alt="Heart health monitoring">
+            <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox pulsating-play-btn"></a>
+          </div>
+          <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="100">
+            <h3>About Heart Disease Prediction</h3>
+            <p>
+              Cardiovascular disease remains one of the leading causes of death worldwide. Our AI-powered heart disease prediction 
+              platform uses advanced machine learning algorithms to analyze key risk factors and provide early detection of potential heart conditions.
+            </p>
+            <ul>
+              <li>
+                <i class="fa-solid fa-heartbeat"></i>
+                <div>
+                  <h5>Accurate Risk Assessment</h5>
+                  <p>Our algorithm analyzes multiple factors including age, cholesterol levels, blood pressure, and family history to assess your heart disease risk.</p>
+                </div>
+              </li>
+              <li>
+                <i class="fa-solid fa-stethoscope"></i>
+                <div>
+                  <h5>Real-time Monitoring</h5>
+                  <p>Track important heart health metrics over time and receive alerts when values indicate increased risk.</p>
+                </div>
+              </li>
+              <li>
+                <i class="fa-solid fa-heart-pulse"></i>
+                <div>
+                  <h5>Preventive Recommendations</h5>
+                  <p>Receive personalized recommendations on lifestyle changes, exercise, and medication management to improve heart health.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section><!-- /About Section -->
+
+    <!-- Heart Disease Services Section -->
+    <section id="services" class="services section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Cardiovascular Health Services</h2>
+        <p>Comprehensive heart disease prevention, detection, and management services powered by artificial intelligence.</p>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="service-item position-relative">
+              <div class="icon">
+                <i class="fas fa-heartbeat"></i>
+              </div>
+              <a href="#" class="stretched-link">
+                <h3>Heart Risk Assessment</h3>
+              </a>
+              <p>AI-powered analysis of your heart disease risk based on multiple factors including age, cholesterol, blood pressure, and lifestyle habits.</p>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="service-item position-relative">
+              <div class="icon">
+                <i class="fas fa-pills"></i>
+              </div>
+              <a href="#" class="stretched-link">
+                <h3>Cardiac Medication Tracking</h3>
+              </a>
+              <p>Manage your heart medications with intelligent reminders and adherence monitoring to optimize treatment effectiveness.</p>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="service-item position-relative">
+              <div class="icon">
+                <i class="fas fa-hospital-user"></i>
+              </div>
+              <a href="#" class="stretched-link">
+                <h3>Heart-Healthy Diet Plans</h3>
+              </a>
+              <p>Personalized nutrition recommendations that support cardiovascular health and reduce heart disease risk factors.</p>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+            <div class="service-item position-relative">
+              <div class="icon">
+                <i class="fas fa-dna"></i>
+              </div>
+              <a href="#" class="stretched-link">
+                <h3>Cardiac Exercise Programs</h3>
+              </a>
+              <p>Customized physical activity recommendations designed to strengthen your heart and improve cardiovascular fitness.</p>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+            <div class="service-item position-relative">
+              <div class="icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <a href="#" class="stretched-link">
+                <h3>Heart Health Monitoring</h3>
+              </a>
+              <p>Track key cardiovascular metrics over time to visualize progress and identify concerning trends early.</p>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+            <div class="service-item position-relative">
+              <div class="icon">
+                <i class="fas fa-notes-medical"></i>
+              </div>
+              <a href="#" class="stretched-link">
+                <h3>Cardiac Health Reports</h3>
+              </a>
+              <p>Detailed heart health assessments that can be shared with your healthcare provider for integrated care.</p>
+            </div>
+          </div><!-- End Service Item -->
+
+        </div>
+      </div>
+    </section><!-- /Services Section -->
+
+    <!-- Heart Care Sections -->
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="row">
+        <div class="col-lg-3">
+          <ul class="nav nav-tabs flex-column">
+            <li class="nav-item">
+              <a class="nav-link active show" data-bs-toggle="tab" href="#departments-tab-1">Risk Assessment</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="tab" href="#departments-tab-2">Preventive Care</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="tab" href="#departments-tab-4">Lifestyle Management</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="tab" href="#departments-tab-5">Monitoring Tools</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-lg-9 mt-4 mt-lg-0">
+          <div class="tab-content">
+            <div class="tab-pane active show" id="departments-tab-1">
+              <div class="row">
+                <div class="col-lg-8 details order-2 order-lg-1">
+                  <h3>Cardiac Risk Assessment</h3>
+                  <p class="fst-italic">Comprehensive analysis of your heart disease risk factors using AI algorithms.</p>
+                  <p>Our advanced model evaluates key indicators including age, blood pressure, cholesterol levels, and lifestyle factors to provide an accurate assessment of your cardiovascular health and disease risk.</p>
+                </div>
+                <div class="col-lg-4 text-center order-1 order-lg-2">
+                  <img src="static/img/one.png" alt="" class="img-fluid">
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="departments-tab-2">
+              <div class="row">
+                <div class="col-lg-8 details order-2 order-lg-1">
+                  <h3>Heart Disease Prevention</h3>
+                  <p class="fst-italic">Proactive strategies to reduce your risk of developing cardiovascular disease.</p>
+                  <p>Based on your personal risk profile, we provide targeted recommendations for lifestyle modifications, nutrition, physical activity, and medication management to protect your heart health.</p>
+                </div>
+                <div class="col-lg-4 text-center order-1 order-lg-2">
+                  <img src="static/img/two.png" alt="" class="img-fluid">
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane" id="departments-tab-4">
+              <div class="row">
+                <div class="col-lg-8 details order-2 order-lg-1">
+                  <h3>Cardiac Lifestyle Management</h3>
+                  <p class="fst-italic">Personalized heart-healthy lifestyle recommendations.</p>
+                  <p>Receive customized guidance on diet, exercise, stress management, and other lifestyle factors that significantly impact heart health, all tailored to your specific needs and risk profile.</p>
+                </div>
+                <div class="col-lg-4 text-center order-1 order-lg-2">
+                  <img src="static/img/three.png" alt="" class="img-fluid">
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="departments-tab-5">
+              <div class="row">
+                <div class="col-lg-8 details order-2 order-lg-1">
+                  <h3>Heart Health Monitoring</h3>
+                  <p class="fst-italic">Continuous tracking of cardiac health metrics for early intervention.</p>
+                  <p>Our platform allows you to monitor key cardiovascular indicators over time, helping you visualize progress, identify concerning trends, and track the effectiveness of lifestyle changes and medications.</p>
+                </div>
+                <div class="col-lg-4 text-center order-1 order-lg-2">
+                  <img src="static/img/four.png" alt="" class="img-fluid">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer id="footer" class="footer light-background">
+
+
+
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">SDM HUBLI</strong> <span>All Rights Reserved</span></p>
+
+    </div>
+
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="static/vendor/php-email-form/validate.js"></script>
+  <script src="static/vendor/aos/aos.js"></script>
+  <script src="static/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="static/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="static/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="static/js/main.js"></script>
+
+</body>
+
+</html>

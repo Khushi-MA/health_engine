@@ -1,0 +1,49 @@
+{% extends 'dashboardfiles/dashboard.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link href="{% static 'css/diabetes_results.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Liver Disease Prediction Results</h1>
+    
+    <div class="result {% if 'Liver disease detected' in prediction_result %}positive-result{% else %}negative-result{% endif %}">
+        <div class="result-icon">
+            {% if "No liver disease detected" in prediction_result %}
+                <i class="fas fa-check-circle healthy-icon"></i>
+            {% elif "Liver disease detected" in prediction_result %}
+                <i class="fas fa-exclamation-circle warning-icon"></i>
+            {% endif %}
+        </div>
+        
+        {% if "No liver disease detected" in prediction_result %}
+            <p style="color: #22543d;">{{ prediction_result }}</p>
+            <div class="result-description">
+                Based on the provided information, our model indicates no significant risk factors for liver disease at this time.
+            </div>
+        {% elif "Liver disease detected" in prediction_result %}
+            <p style="color: #9b2c2c;">{{ prediction_result }}</p>
+            <div class="result-description">
+                Based on the provided information, our model has detected potential indicators of liver disease. Further medical evaluation is recommended.
+            </div>
+        {% else %}
+            <p>{{ prediction_result }}</p>
+        {% endif %}
+    </div>
+    
+    {% if prediction_accuracy is not None %}
+        <div class="accuracy">
+            <p style="color: #2b6cb0; font-weight: 600;">Prediction Accuracy: {{ prediction_accuracy }}%</p>
+            <div class="accuracy-description">
+                This represents the model's confidence level in this prediction based on similar cases in our training data.
+            </div>
+        </div>
+    {% endif %}
+    
+    <div class="navigation">
+        <a href="{% url 'dashboard_liver_prediction' %}" class="btn btn-secondary">Make Another Prediction</a>
+    </div>
+</div>
+{% endblock %}

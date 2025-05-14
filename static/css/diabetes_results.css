@@ -1,0 +1,96 @@
+.button1 {
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: #2b6cb0;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.result {
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.negative-result {
+    background-color: #e6fffa;
+    border: 1px solid #38b2ac;
+}
+.positive-result {
+    background-color: #fff5f5;
+    border: 1px solid #fc8181;
+}
+.result-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+.healthy-icon {
+    color: #38a169;
+}
+.warning-icon {
+    color: #e53e3e;
+}
+.result p {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+}
+.result-description {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+}
+.accuracy {
+    background-color: #ebf8ff;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+.accuracy p {
+    font-size: 1.2rem;
+    margin: 0;
+}
+.accuracy-description {
+    font-size: 0.9rem;
+    color: #4a5568;
+    margin-top: 0.5rem;
+}
+.caution-note {
+    background-color: #fffaf0;
+    border: 1px solid #ed8936;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+.caution-note h3 {
+    color: #c05621;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.navigation {
+    text-align: center;
+    margin-top: 2rem;
+}
+.back-button {
+    display: inline-block;
+    background-color: #4299e1;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+.back-button:hover {
+    background-color: #3182ce;
+}
+.back-button i {
+    margin-right: 0.5rem;
+}
+
