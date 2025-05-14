@@ -21,116 +21,10 @@ logger = logging.getLogger(__name__)
 
 
 
-def home(request):
-    return render(request , 'index.html')
-def user_login(request):  # Renamed from 'login' to 'user_login'
-    try:
-        if request.user.is_authenticated:
-            if request.user.user_type == 'admin':
-                return redirect('home')
-            elif request.user.user_type == 'customer':
-                return redirect('home')
-
-        if request.method == 'POST':
-            email = request.POST.get('email')
-            password = request.POST.get('password')
-
-            if email:
-                email = email.strip().lower()
-
-            # Get user by email (use get_user_model)
-            try:
-                user = User.objects.get(email=email)
-                username = user.username  # Get the actual username
-            except User.DoesNotExist:
-                return render(request, 'login.html', {'error_message': 'Invalid email or password'})
-
-            # Authenticate using the retrieved username
-            user = authenticate(request, username=username, password=password)
-
-            if user:
-                login(request, user)  # Use Django's built-in login function
-                return redirect('home')
-            else:
-                return render(request, 'login.html', {'error_message': 'Invalid email or password'})
-
-        return render(request, 'login.html')
-
-    except Exception as e:
-        print(e)  # Debugging
-        return render(request, 'login.html', {'error_message': 'An unexpected error occurred'})
-
-
-
-
-def register(request):
-    if request.method == 'POST':
-        try:
-            form_data = request.POST
-
-            # Validate required fields
-            required_fields = ['name', 'email', 'password', 'repeat_password']
-            missing_fields = [field for field in required_fields if field not in form_data or not form_data[field]]
-            if missing_fields:
-                raise ValidationError(f"Missing fields: {', '.join(missing_fields)}")
-
-            # Validate passwords match
-            password = form_data['password']
-            repeat_password = form_data['repeat_password']
-            if password != repeat_password:
-                raise ValidationError("Passwords do not match.")
-
-            # Check for unique email and username
-            email = form_data['email']
-            username = form_data['email']  # Using email as username
-            if NewUser.objects.filter(Q(email=email) | Q(username=username)).exists():
-                raise ValidationError("An account with this email or username already exists.")
-
-            # Create user
-            user_profile = NewUser(
-                first_name=form_data['name'],
-                last_name=form_data['last_name'],  # Use 'last_name' from form
-                username=username,
-                email=email,
-                user_type='customer',  # Default to 'customer'
-                password=make_password(password),  # Secure hashed password
-            )
-            user_profile.save()
-
-            messages.success(request, 'Registration successful!')
-            return redirect('login')
-
-        except ValidationError as e:
-            messages.error(request, str(e))
-            return render(request, 'customer_register.html', {'form_data': form_data})
-
-        except Exception as e:
-            logger.error("Error in save_customer", exc_info=True)
-            messages.error(request, "An unexpected error occurred. Please try again later.")
-            return render(request, 'register.html', {'form_data': form_data})
-
-    return render(request, 'register.html')
-
-
-User = get_user_model()  # Get the swapped user model
-
-
-
-def custom_logout(request):
-    # Logout the user
-    logout(request)
-
-    # Redirect to the homepage or any other page after logout
-    return redirect('home')  # Replace 'index' with your desired redirect URL name
-
-
 @login_required
 def dashboard(request):
     # Simplified - notifications come from context processor
     return render(request, 'dashboardfiles/dashboard.html')
-
-
-
 
 @login_required
 def dashboard_track_medication(request):
@@ -274,3 +168,60 @@ def send_medication_reminder(user, medication_name, time_str):
     except Exception as e:
         logger.error(f"Failed to send medication reminder: {str(e)}")
         return False
+    
+
+
+import google.generativeai as genai
+
+# configure Gemini once
+genai.configure(api_key="AIzaSyANgsIFgSreJAOvVhCxGkBvpORU3sFq-4s")  # Replace with your API key
+model = genai.GenerativeModel('gemini-1.5-flash')
+
+@login_required
+def diet_plan(request):
+    if request.method == 'POST':
+        dietary_restrictions = request.POST['dietary_restrictions']
+        preferred_cuisine = request.POST['preferred_cuisine']
+        meal_frequency = request.POST['meal_frequency']
+        allergies = request.POST['allergies']
+        health_goals = request.POST['health_goals']
+        other_info = request.POST['other_info']
+
+        prompt = f"""Based on the following dietary preferences and restrictions, provide a personalized diet plan:
+
+Dietary Restrictions: {dietary_restrictions}
+Preferred Cuisine: {preferred_cuisine}
+Meal Frequency: {meal_frequency}
+Allergies: {allergies}
+Health Goals: {health_goals}
+Other Information: {other_info}
+"""
+
+        try:
+            response = model.generate_content(prompt)
+            diet_plan = response.text
+
+            # Save to DB (if a model for dietary preferences exists)
+            # Example:
+            # DietSubmission.objects.create(
+            #     user=request.user,
+            #     dietary_restrictions=dietary_restrictions,
+            #     preferred_cuisine=preferred_cuisine,
+            #     meal_frequency=meal_frequency,
+            #     allergies=allergies,
+            #     health_goals=health_goals,
+            #     other_info=other_info,
+            #     diet_plan=diet_plan
+            # )
+
+            return render(request, 'dashboardfiles/diet_plan.html', {
+                'diet_plan': diet_plan,
+                'success': True
+            })
+
+        except Exception as e:
+            return render(request, 'dashboardfiles/diet_plan.html', {
+                'error': f"Failed to generate diet plan: {e}"
+            })
+
+    return render(request, 'dashboardfiles/diet_plan.html')

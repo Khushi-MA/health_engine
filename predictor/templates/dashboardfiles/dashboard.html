@@ -67,6 +67,7 @@
             <li><a href="{% url 'dashboard_diabetes_prediction' %}">Diabetes Prediction</a></li>
             <li><a href="{% url 'dashboard_liver_prediction' %}">Liver Disease Prediction</a></li>
             <li><a href="{% url 'dashboard_heart_prediction' %}">Heart Disease Prediction</a></li>
+            <li><a href="{% url 'diet_plan' %}">Diet Plan</a></li> <!-- Added button for Diet Plan -->
             {% endif %}
             {% if user.is_authenticated %}
             <li><a href="/logout">Logout</a></li>

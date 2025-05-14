@@ -1,0 +1,66 @@
+{% extends 'dashboardfiles/dashboard.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link href="{% static 'css/diet_plan.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h1 class="text-center">Personalized Diet Plan</h1>
+
+  {% if diet_plan %}
+    <div class="card mt-4">
+      <div class="card-body">
+        <!-- Render Markdown content -->
+        <div id="markdown-output"></div>
+        <script>
+          // Use Marked.js to parse and render the Markdown content
+          document.addEventListener("DOMContentLoaded", function () {
+            const markdownContent = `{{ diet_plan|escapejs }}`; // Escape JavaScript for safety
+            const htmlContent = marked.parse(markdownContent); // Parse Markdown to HTML
+            document.getElementById("markdown-output").innerHTML = htmlContent; // Render HTML
+          });
+        </script>
+      </div>
+    </div>
+  {% elif error %}
+    <div class="alert alert-danger text-center mt-4">
+      {{ error }}
+    </div>
+  {% else %}
+    <p class="text-center">Submit your dietary preferences to generate a personalized diet plan.</p>
+    <form method="POST" class="mt-4">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="dietary_restrictions" class="form-label">Dietary Restrictions</label>
+        <input type="text" class="form-control" id="dietary_restrictions" name="dietary_restrictions" placeholder="e.g., Vegetarian, Gluten-Free">
+      </div>
+      <div class="mb-3">
+        <label for="preferred_cuisine" class="form-label">Preferred Cuisine</label>
+        <input type="text" class="form-control" id="preferred_cuisine" name="preferred_cuisine" placeholder="e.g., Indian, Italian">
+      </div>
+      <div class="mb-3">
+        <label for="meal_frequency" class="form-label">Meal Frequency</label>
+        <input type="text" class="form-control" id="meal_frequency" name="meal_frequency" placeholder="e.g., 3 meals per day">
+      </div>
+      <div class="mb-3">
+        <label for="allergies" class="form-label">Allergies</label>
+        <input type="text" class="form-control" id="allergies" name="allergies" placeholder="e.g., Nuts, Dairy">
+      </div>
+      <div class="mb-3">
+        <label for="health_goals" class="form-label">Health Goals</label>
+        <input type="text" class="form-control" id="health_goals" name="health_goals" placeholder="e.g., Weight Loss, Muscle Gain">
+      </div>
+      <div class="mb-3">
+        <label for="other_info" class="form-label">Other Information</label>
+        <textarea class="form-control" id="other_info" name="other_info" rows="3" placeholder="Any additional details..."></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Generate Diet Plan</button>
+    </form>
+  {% endif %}
+</div>
+
+<!-- Include Marked.js -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+{% endblock %}

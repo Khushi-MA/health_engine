@@ -35,6 +35,8 @@ urlpatterns = [
     # path('dashboard/', views.dashboard_track_medication, name='dashboard_track_medication'),
     path('dashboard/add-medication/', views.add_medication, name='add_medication'),
     path('dashboard/mark-dose/<int:log_id>/<str:status>/', views.mark_dose, name='mark_dose'),
+    
+    path('dashboard/diet_plan/', views.diet_plan, name='diet_plan'),
 
     path('googleapi', views.googleapi, name='googleapi'),
 ]
