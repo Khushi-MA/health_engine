@@ -71,24 +71,19 @@
 
         <nav id="navmenu" class="navmenu">
           <ul>
-            <li><a href="{% url 'googleapi' %}">google API</a></li>
             <li><a href="#" class="active">Home<br></a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#services">Services</a></li>
             {% if user.is_authenticated %}
-            <!-- <li><a href="/dashboard">Dashboard</a></li> -->
             <li><a href="{% url 'diet_plan' %}">Dashboard</a></li>
-            <li class="dropdown">
+            <!-- <li class="dropdown">
               <a href="#predict">Predict</a>
               <ul class="dropdown-menu">
                 <li><a href="/predict">Liver Prediction</a></li>
                 <li><a href="/predict_heart">Heart Prediction</a></li>
                 <li><a href="/predict_diabetes">Diabetes Prediction</a></li>
-
-
-                <!-- Add more prediction links as needed -->
               </ul>
-            </li>
+            </li> -->
             {% endif %}
             {% if user.is_authenticated %}
             <li><a href="/logout">Logout</a></li>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from . import views  # Ensure this import is present
 from django.core.exceptions import ValidationError
 from django.conf import settings
@@ -10,13 +10,6 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('index', views.home, name='home'),
 
-    path('predict', views.predict_liver_disease, name='predict'),
-    path('results', views.liver_results, name='liver_results'),
-    path('predict_heart', views.predict_heart_disease, name='predict_heart'),
-    path('predict/result', views.predict_result, name='predict_result'),
-    path('predict_diabetes', views.predict_diabetes, name='predict_diabetes'),
-    path('diabetes_results', views.diabetes_results, name='diabetes_results'),
-    
     path('register' , views.register , name = 'register') ,
     path('login', views.user_login, name='login'),  # Updated to use 'user_login'
     path('logout', views.custom_logout, name='logout'),
